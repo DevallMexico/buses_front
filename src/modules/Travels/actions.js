@@ -3,8 +3,8 @@ import { endpoints } from "./urls";
 
 axios.defaults.headers.common.Authorization = `Token ${localStorage.getItem("authToken")}`;
 
-export const getTravelsList = () => {
-  return axios.get(endpoints.travels());
+export const getTravelsList = (queryParams=null) => {
+  return axios.get(`${endpoints.travels()}${queryParams ? `?${queryParams}` : ""}`);
 }
 
 export const createTravel = (data) => {

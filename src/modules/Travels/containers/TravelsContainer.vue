@@ -1,23 +1,32 @@
 <template>
   <NavBarMenu />
+  <div class="container">
   <TravelsModalComponent 
     v-if="isOpenModal" 
     :showModal="showModal" 
     :getTravels="getTravels" 
     :selectedTravel="data.selectedTravel"
     :isCreate="data.isCreate"/>
-  <h2>Trayectos</h2>
-  <button @click="showModal">Agregar</button>
-  <table class="table">
+
+  <div class="margin-row">
+  <div class="row"> 
+    <div class="col-md-9">
+      <h2>Trayectos</h2>
+    </div>
+    <div class="col-md-3 text-center">
+      <button class="btn btn-success add-button" @click="showModal">+ Agregar</button>
+    </div>
+  </div>
+  </div>
+  <div class="margin-row">
+  <div class="row ">
+    <div class="table-responsive">
+  <table class="table table-hover">
   <thead>
     <tr>
       <th scope="col">#</th>
       <th scope="col">Origen</th>
       <th scope="col">Destino</th>
-      <th scope="col">Conductor</th>
-      <th scope="col">Autobús</th>
-      <th scope="col">Fecha y hora de Salida</th>
-      <th scope="col">Fecha y hora de Llegada</th>
       <th scope="col">Opciones</th>
     </tr>
   </thead>
@@ -26,15 +35,20 @@
       <th scope="row">{{ travel.id }}</th>
       <td>{{ travel.origin }}</td>
       <td>{{ travel.destiny }}</td>
-      <td>{{ travel.driver.first_name }}</td>
-      <td>{{ travel.bus.brand }}</td>
-      <td>{{ travel.start_date }}</td>
-      <td>{{ travel.end_date }}</td>
-      <td><button @click="onEditTravel(travel.id)">Editar</button><button @click="onDeleteTravel(travel.id)">Eliminar</button></td>
+      <td>
+        <button class="btn btn-primary" @click="onEditTravel(travel.id)">Editar</button>
+        &nbsp;
+        <button class="btn btn-danger" @click="onDeleteTravel(travel.id)">Eliminar</button>
+      </td>
     </tr>
  
   </tbody>
 </table>
+    </div>
+  </div>
+  </div>
+
+  </div>
 
 </template>
 

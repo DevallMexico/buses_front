@@ -1,14 +1,28 @@
 <template>
   <NavBarMenu />
+   <div class="container">
   <DriversModalComponent 
     v-if="isOpenModal" 
     :showModal="showModal" 
     :getDrivers="getDrivers" 
     :selectedDriver="data.selectedDriver"
     :isCreate="data.isCreate"/>
-  <h2>Conductores</h2>
-  <button @click="showModal">Agregar</button>
-  <table class="table">
+
+
+  <div class="margin-row">
+  <div class="row"> 
+    <div class="col-md-9">
+      <h2>Conductores</h2>
+    </div>
+    <div class="col-md-3 text-center">
+      <button class="btn btn-success add-button" @click="showModal">+ Agregar</button>
+    </div>
+  </div>
+  </div>
+  <div class="margin-row">
+  <div class="row ">
+    <div class="table-responsive">
+  <table class="table table-hover">
   <thead>
     <tr>
       <th scope="col">#</th>
@@ -26,11 +40,19 @@
       <td>{{ driver.last_name }}</td>
       <td>{{ driver.age }}</td>
       <td>{{ driver.cel_phone }}</td>
-      <td><button @click="onEditDriver(driver.id)">Editar</button><button @click="onDeleteDriver(driver.id)">Eliminar</button></td>
+      <td>
+        <button class="btn btn-primary" @click="onEditDriver(driver.id)">Editar</button>
+         &nbsp;
+        <button class="btn btn-danger" @click="onDeleteDriver(driver.id)">Eliminar</button>
+      </td>
     </tr>
  
   </tbody>
 </table>
+    </div>
+  </div>
+  </div>
+   </div>
 
 </template>
 

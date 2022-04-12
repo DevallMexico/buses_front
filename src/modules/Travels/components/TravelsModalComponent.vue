@@ -1,21 +1,27 @@
 <template>
-  <div class="modal">
-    <div class="content">
-    <button class="close" @click="showModals">x</button>
-    <h3>Agregar Trayectos</h3>
+  <div class="customModal">
+    <div class="customModalContent">
+      <div class="modal-header">
+      <h4 class="modal-title">Trayectos</h4>
+      <button class="btn btn-secundary" @click="showModals">x</button>
+    </div>
+    <div class="container"> 
     <form @submit.prevent="isTravelCreate ? onSaveTravel() : onUpdateTravel()">
-      <input type="text" placeholder="Origen" v-model="data.travel.origin">
-      <input type="text" placeholder="Destino" v-model="data.travel.destiny">
-      <select v-model="data.travel.bus">
-        <option v-for="item in data.buses" :key="item.id" v-bind:value="item.id">{{ item.brand }}</option>
-      </select>
-      <select v-model="data.travel.driver">
-        <option v-for="item in data.drivers" :key="item.id" :value="item.id">{{ item.first_name }}</option>
-      </select>
-      <input type="datetime-local" placeholder="Destino" v-model="data.travel.start_date">
-      <input type="datetime-local" placeholder="Destino" v-model="data.travel.end_date">
-      <button type="submit">{{ isTravelCreate ? "Guardar" : "Actualizar" }}</button>
+      <div class="form-group">
+        <label>Origen</label>
+      <input type="text" class="form-control" v-model="data.travel.origin">
+      </div>
+      <div class="form-group">
+        <label>Destino</label>
+      <input type="text" class="form-control" v-model="data.travel.destiny">
+      </div>
+      <div class="text-center margin-row">
+      <button class="btn btn-primary" type="submit">{{ isTravelCreate ? "Guardar" : "Actualizar" }}</button>
+          &nbsp;
+      <button class="btn btn-light" @click="showModals">Cancelar</button>
+      </div>
     </form>
+    </div>
     </div>
   </div>
 </template>
@@ -24,8 +30,6 @@
 import { reactive } from '@vue/reactivity';
 import { onMounted } from 'vue';
 import { createTravel, updateTravel } from '../actions';
-import { getBusesList } from '../../Buses/actions';
-import { getDriversList } from '../../Drivers/actions';
 // import SelectComponent from '../../../components/SelectComponent.vue';
 
 export default {
@@ -38,20 +42,14 @@ export default {
     isCreate: Boolean
   },
   setup (props) {
-    const data = reactive({travel: {id: "", origin: "", destiny: "", bus: "", driver: "", start_date: "", end_date: ""}, buses: [], drivers: []});
-    onMounted (async () => {
+    const data = reactive({travel: {id: "", origin: "", destiny: ""}});
+    onMounted (() => {
       const travel = props.selectedTravel;
       if (Object.keys(travel).length > 0) {
         data.travel.id = travel.id;
         data.travel.origin = travel.origin;
         data.travel.destiny = travel.destiny;
-        data.travel.bus = travel.bus.id;
-        data.travel.driver = travel.driver.id;
-        data.travel.start_date = (new Date(travel.start_date)).toISOString().substring(0, 16);
-        data.travel.end_date = (new Date(travel.end_date)).toISOString().substring(0, 16);
       }
-      data.buses = (await getBusesList()).data;
-      data.drivers = (await getDriversList()).data;
     });
     return {
       data,

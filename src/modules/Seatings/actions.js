@@ -3,18 +3,15 @@ import { endpoints } from "./urls";
 
 axios.defaults.headers.common.Authorization = `Token ${localStorage.getItem("authToken")}`;
 
-export const getTravelsList = () => {
-  return axios.get(endpoints.travels());
+
+export const createSeat = (data) => {
+  return axios.post(endpoints.seatings(), data);
 }
 
-export const createTravel = (data) => {
-  return axios.post(endpoints.travels(), data);
+export const createMultipleSeatings = (data) => {
+  return axios.post(endpoints.multipleSeatings, data);
 }
 
-export const updateTravel = (data) => {
-  return axios.patch(endpoints.travels(data?.id), data);
-}
-
-export const deleteTravel = (id) => {
-  return axios.delete(endpoints.travels(id));
+export const getOccupiedSeats = (travelId) => {
+  return axios.get(`${endpoints.seatings()}?travel=${travelId}`);
 }

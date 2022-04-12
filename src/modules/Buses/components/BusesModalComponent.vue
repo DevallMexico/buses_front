@@ -1,15 +1,35 @@
 <template>
-  <div class="modal">
-    <div class="content">
-    <button class="close" @click="showModals">x</button>
-    <h3>Agregar Autobuses</h3>
-    <form @submit.prevent="isBusCreate ? onSaveBus() : onUpdateBus()">
-      <input type="text" placeholder="Marca" v-model="busData.brand">
-      <input type="text" placeholder="Modelo" v-model="busData.model">
-      <input type="text" placeholder="Año" v-model="busData.year">
-      <input type="number" placeholder="Capacidad" v-model="busData.capacity">
-      <button type="submit">{{ isBusCreate ? "Guardar" : "Actualizar" }}</button>
-    </form>
+  <div class="customModal">
+    <div class="customModalContent">
+      <div class="modal-header">
+        <h4 class="modal-title">Autobus</h4>
+        <button class="btn btn-secundary" @click="showModals">x</button>
+      </div>
+      <div class="container"> 
+        <form @submit.prevent="isBusCreate ? onSaveBus() : onUpdateBus()">
+        <div class="form-group">
+          <label>Marca:</label>
+          <input class="form-control" type="text" v-model="busData.brand">
+        </div>
+         <div class="form-group">
+          <label>Modelo:</label>
+          <input class="form-control" type="text" v-model="busData.model">
+        </div>
+         <div class="form-group">
+          <label>Año:</label>
+          <input class="form-control" type="text" v-model="busData.year">
+        </div>
+         <div class="form-group">
+          <label>Capacidad:</label>
+          <input  class="form-control" type="number" v-model="busData.capacity">
+        </div>
+        <div class="text-center margin-row">
+          <button class="btn btn-primary" type="submit">{{ isBusCreate ? "Guardar" : "Actualizar" }}</button>
+          &nbsp;
+          <button @click="showModals" class="btn btn-light" type="submit">Cancelar</button>
+        </div>
+      </form>
+      </div>
     </div>
   </div>
 </template>
@@ -70,25 +90,5 @@ export default {
 </script>
 
 <style scoped>
-  .modal {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    bottom: 0px;
-    right: 0px;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
-  }
-
-  .content {
-    position: relative;
-    width: 300px;
-    height: 300px;
-    z-index: 30;
-    background-color: #fff;
-    margin-top: -10rem;
-  }
+  
 </style>

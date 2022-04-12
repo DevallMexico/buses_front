@@ -1,15 +1,36 @@
 <template>
-  <div class="modal">
-    <div class="content">
-    <button class="close" @click="showModals">x</button>
-    <h3>Agregar Conductores</h3>
+  <div class="customModal">
+    <div class="customModalContent">
+    <div class="modal-header">
+      <h4 class="modal-title">Conductores</h4>
+      <button class="btn btn-secundary" @click="showModals">x</button>
+    </div>
+    <div class="container"> 
     <form @submit.prevent="isDriverCreate ? onSaveDriver() : onUpdateDriver()">
-      <input type="text" placeholder="Nombre" v-model="driverData.first_name">
-      <input type="text" placeholder="Apellidos" v-model="driverData.last_name">
-      <input type="text" placeholder="Edad" v-model="driverData.age">
-      <input type="number" placeholder="Celular" v-model="driverData.cel_phone">
-      <button type="submit">{{ isDriverCreate ? "Guardar" : "Actualizar" }}</button>
+      <div class="form-group">
+        <label>Nombre(s)</label>
+      <input type="text" class="form-control" v-model="driverData.first_name">
+      </div>
+      <div class="form-group">
+        <label>Apellidos</label>
+      <input type="text" class="form-control" v-model="driverData.last_name">
+      </div>
+      <div class="form-group">
+        <label>Edad</label>
+      <input type="text" class="form-control" v-model="driverData.age">
+      </div>
+      <div class="form-group">
+        <label>Número de telefono</label>
+      <input type="number" class="form-control" v-model="driverData.cel_phone">
+      </div>
+      <div class="text-center margin-row">
+
+      <button class="btn btn-primary" type="submit">{{ isDriverCreate ? "Guardar" : "Actualizar" }}</button>
+      &nbsp;
+      <button class="btn btn-light" @click="showModals">Cancelar</button>
+      </div>
     </form>
+    </div>
     </div>
   </div>
 </template>
@@ -69,25 +90,4 @@ export default {
 </script>
 
 <style scoped>
-  .modal {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    bottom: 0px;
-    right: 0px;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
-  }
-
-  .content {
-    position: relative;
-    width: 300px;
-    height: 300px;
-    z-index: 30;
-    background-color: #fff;
-    margin-top: -10rem;
-  }
 </style>

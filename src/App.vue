@@ -7,24 +7,34 @@
 </template>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+.margin-row {
+  margin-top: 1.2rem;
+  margin-bottom: 1.2rem;
 }
 
-nav {
-  padding: 30px;
+.form-group {
+  margin-top: 0.6rem;
 }
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+.customModal {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+  }
 
-nav a.router-link-exact-active {
-  color: #42b983;
-}
+  .customModalContent {
+    position: relative;
+    width: 30rem;
+    height: auto;
+    z-index: 30;
+    background-color: #fff;
+    margin-top: -10rem;
+  }
 </style>

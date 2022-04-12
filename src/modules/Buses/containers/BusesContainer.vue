@@ -1,22 +1,35 @@
 <template>
   <NavBarMenu />
+  <div class="container">
+
   <BusesModalComponent 
     v-if="isOpenModal" 
     :showModal="showModal" 
     :getBuses="getBuses" 
     :selectedBus="data.selectedBus"
     :isCreate="data.isCreate"/>
-  <h2>Autobuses</h2>
-  <button @click="showModal">Agregar</button>
-  <table class="table">
+  <div class="margin-row">
+  <div class="row"> 
+    <div class="col-md-9">
+      <h2>Autobuses</h2>
+    </div>
+    <div class="col-md-3 text-center">
+      <button class="btn btn-success add-button" @click="showModal">+ Agregar</button>
+    </div>
+  </div>
+  </div>
+  <div class="margin-row">
+  <div class="row ">
+    <div class="table-responsive">
+  <table class="table table-hover">
   <thead>
-    <tr>
+    <tr >
       <th scope="col">#</th>
       <th scope="col">Marca</th>
       <th scope="col">Modelo</th>
       <th scope="col">Año</th>
       <th scope="col">Capacidad</th>
-      <th scope="col">Acciones</th>
+      <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
@@ -26,12 +39,20 @@
       <td>{{ bus.model }}</td>
       <td>{{ bus.year }}</td>
       <td>{{ bus.capacity }}</td>
-      <td><button @click="onEditBus(bus.id)">Editar</button><button @click="onDeleteBus(bus.id)">Eliminar</button></td>
+      <td>
+        <button class="btn btn-primary" @click="onEditBus(bus.id)">Editar</button>
+        &nbsp;
+        <button class="btn btn-danger" @click="onDeleteBus(bus.id)">Eliminar</button>
+      </td>
     </tr>
  
   </tbody>
 </table>
-
+    </div>
+  </div>
+  </div>
+  
+</div>
 </template>
 
 <script>
@@ -78,6 +99,10 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+.add-button {
+  margin-top: .6rem;
+}
 
 </style>
  

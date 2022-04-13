@@ -33,11 +33,6 @@ const routes = [
     component: () => import('../modules/Travels/containers/TravelsContainer.vue')
   },
   {
-    path: '/seatings',
-    name: 'Seatings',
-    component: () => import('../modules/Seatings/containers/SeatingsContainer.vue')
-  },
-  {
     path: '/schedules',
     name: 'Schedules',
     component: () => import('../modules/Schedules/containers/SchedulesContainer.vue')

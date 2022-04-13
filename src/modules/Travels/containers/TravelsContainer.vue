@@ -1,12 +1,14 @@
 <template>
   <NavBarMenu />
+  <LoaderComponent v-if="isLoading"/>
   <div class="container">
   <TravelsModalComponent 
     v-if="isOpenModal" 
     :showModal="showModal" 
     :getTravels="getTravels" 
     :selectedTravel="data.selectedTravel"
-    :isCreate="data.isCreate"/>
+    :isCreate="data.isCreate"
+    :onSetLoading="onSetLoading"/>
 
   <div class="margin-row">
   <div class="row"> 
@@ -54,18 +56,23 @@
 
 <script>
   import NavBarMenu from '../../../components/NavBarMenu.vue';
+  import LoaderComponent from '../../../components/Loader.vue';
   import { onMounted, reactive, ref } from "vue";
   import { getTravelsList, deleteTravel} from '../actions';
   import TravelsModalComponent from '../components/TravelsModalComponent.vue';
 
   export default {
     name: 'AdmintTravels',
-    components: {NavBarMenu, TravelsModalComponent},
+    components: {NavBarMenu, TravelsModalComponent, LoaderComponent},
     setup () {
+      const isLoading = ref(false);
       const isOpenModal = ref(false);
       const data = reactive({travels: [], selectedTravel: {}, isCreate: true});
+      const onSetLoading = (state) => isLoading.value = state;
       const getTravels = async () => {
+        onSetLoading(true);
         data.travels = (await getTravelsList()).data;
+        onSetLoading(false);
       };
       const showModal = (isCreate=true) => {
         data.isCreate = isCreate;
@@ -76,6 +83,8 @@
       return {
         isOpenModal,
         data,
+        onSetLoading,
+        isLoading,
         showModal,
         getTravels,
         onEditTravel: (travelId) => {
@@ -83,9 +92,13 @@
           showModal(false);
         },
         onDeleteTravel: (travelId) => {
+          onSetLoading(true);
           deleteTravel(travelId)
           .then(() => getTravels())
-          .catch(error => alert("Ocurrió un error: " + error))
+          .catch(error => {
+            onSetLoading(false);
+            alert("Ocurrió un error: " + error)
+          })
         },
       };
     },

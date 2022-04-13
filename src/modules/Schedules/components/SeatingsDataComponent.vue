@@ -23,7 +23,7 @@
       </div>
       <br>
       <div class="text-center">
-        <button class="btn btn-light" @click="backSteps">Regresar</button>
+        <button class="btn btn-light" @click="setSteps(2)">Regresar</button>
         &nbsp;
         <button class="btn btn-primary" @click="onFillSeatingsData">Continuar</button>
       </div>
@@ -38,7 +38,7 @@ export default {
   props: {
     selectedSeatings: Array,
     onNextSeatingsData: Function,
-    backStep: Function
+    setStep: Function
   },
   setup (props) {
     const seatingsData = ref([]);
@@ -47,13 +47,24 @@ export default {
         const seat = props.selectedSeatings[i];
         seatingsData.value.push({seat_number: seat.seatNumber, first_name: "", last_name: "", age: ""});
       }
-    })
+    });
+    const isValidData = (seatings) => {
+      let isValid = true;
+      for(let i = 0; i < seatings.length; i++) {
+        if(!seatings[i]["first_name"] || !seatings[i]["last_name"] || !seatings[i]["age"]) { 
+          isValid = false;
+          break;
+        }
+      }
+      return isValid;
+    }
     return {
-      backSteps: props.backStep,
+      setSteps: props.setStep,
       seatings: props.selectedSeatings,
       seatingsData,
       onFillSeatingsData: () => {
-        props.onNextSeatingsData(seatingsData);
+        if (isValidData(seatingsData.value)) props.onNextSeatingsData(seatingsData);
+        else alert("Ingresa todos los datos de los pasajeros.");
       }
     }
   }

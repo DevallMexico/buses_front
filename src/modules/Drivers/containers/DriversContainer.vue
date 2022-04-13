@@ -1,12 +1,14 @@
 <template>
   <NavBarMenu />
+  <LoaderComponent v-if="isLoading"/>
    <div class="container">
   <DriversModalComponent 
     v-if="isOpenModal" 
     :showModal="showModal" 
     :getDrivers="getDrivers" 
     :selectedDriver="data.selectedDriver"
-    :isCreate="data.isCreate"/>
+    :isCreate="data.isCreate"
+    :onSetLoading="onSetLoading"/>
 
 
   <div class="margin-row">
@@ -58,18 +60,23 @@
 
 <script>
   import NavBarMenu from '../../../components/NavBarMenu.vue';
+  import LoaderComponent from '../../../components/Loader.vue';
   import { onMounted, reactive, ref } from "vue";
   import { getDriversList, deleteDriver} from '../actions';
   import DriversModalComponent from '../components/DriversModalComponent.vue';
 
   export default {
     name: 'AdminDrivers',
-    components: {NavBarMenu, DriversModalComponent},
+    components: {NavBarMenu, DriversModalComponent, LoaderComponent},
     setup () {
+      const isLoading = ref(false);
       const isOpenModal = ref(false);
       const data = reactive({drivers: [], selectedDriver: {}, isCreate: true});
+      const onSetLoading = (state) => isLoading.value = state;
       const getDrivers = async () => {
+        onSetLoading(true);
         data.drivers = (await getDriversList()).data;
+        onSetLoading(false);
       };
       const showModal = (isCreate=true) => {
         data.isCreate = isCreate;
@@ -80,6 +87,8 @@
       return {
         isOpenModal,
         data,
+        onSetLoading,
+        isLoading,
         showModal,
         getDrivers,
         onEditDriver: (driverId) => {
@@ -87,9 +96,13 @@
           showModal(false);
         },
         onDeleteDriver: (driverId) => {
+          onSetLoading(true);
           deleteDriver(driverId)
           .then(() => getDrivers())
-          .catch(error => alert("Ocurrió un error: " + error))
+          .catch(error => {
+            alert("Ocurrió un error: " + error);
+            onSetLoading(false);
+          })
         },
       };
     },

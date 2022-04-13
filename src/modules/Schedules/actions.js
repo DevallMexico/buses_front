@@ -18,3 +18,15 @@ export const updateSchedule = (data) => {
 export const deleteSchedule = (id) => {
   return axios.delete(endpoints.schedules(id));
 }
+
+export const createSeat = (data) => {
+  return axios.post(endpoints.seatings(), data);
+}
+
+export const createMultipleSeatings = (data) => {
+  return axios.post(endpoints.multipleSeatings, data);
+}
+
+export const getOccupiedSeats = (travelId) => {
+  return axios.get(`${endpoints.seatings()}?travel=${travelId}`);
+}

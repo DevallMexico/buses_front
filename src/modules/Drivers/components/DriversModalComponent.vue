@@ -1,36 +1,35 @@
 <template>
-  <div class="customModal">
+  <div class="customModal" id="modal">
     <div class="customModalContent">
-    <div class="modal-header">
-      <h4 class="modal-title">Conductores</h4>
-      <button class="btn btn-secundary" @click="showModals">x</button>
-    </div>
-    <div class="container"> 
-    <form @submit.prevent="isDriverCreate ? onSaveDriver() : onUpdateDriver()">
-      <div class="form-group">
-        <label>Nombre(s)</label>
-      <input type="text" class="form-control" v-model="driverData.first_name">
+      <div class="modal-header">
+        <h4 class="modal-title">Conductores</h4>
+        <button class="btn btn-secundary" @click="showModals">x</button>
       </div>
-      <div class="form-group">
-        <label>Apellidos</label>
-      <input type="text" class="form-control" v-model="driverData.last_name">
+      <div class="container"> 
+        <form @submit.prevent="onSaveUpdateDriver">
+          <div class="form-group">
+            <label>Nombre(s)</label>
+          <input type="text" class="form-control" v-model="driverData.first_name" required>
+          </div>
+          <div class="form-group">
+            <label>Apellidos</label>
+          <input type="text" class="form-control" v-model="driverData.last_name" required>
+          </div>
+          <div class="form-group">
+            <label>Edad</label>
+          <input type="text" class="form-control" v-model="driverData.age" required>
+          </div>
+          <div class="form-group">
+            <label>Número de telefono</label>
+          <input type="number" class="form-control" v-model="driverData.cel_phone" required>
+          </div>
+          <div class="text-center margin-row">
+            <button class="btn btn-primary" type="submit">{{ isDriverCreate ? "Guardar" : "Actualizar" }}</button>
+            &nbsp;
+            <button class="btn btn-light" @click="showModals">Cancelar</button>
+          </div>
+        </form>
       </div>
-      <div class="form-group">
-        <label>Edad</label>
-      <input type="text" class="form-control" v-model="driverData.age">
-      </div>
-      <div class="form-group">
-        <label>Número de telefono</label>
-      <input type="number" class="form-control" v-model="driverData.cel_phone">
-      </div>
-      <div class="text-center margin-row">
-
-      <button class="btn btn-primary" type="submit">{{ isDriverCreate ? "Guardar" : "Actualizar" }}</button>
-      &nbsp;
-      <button class="btn btn-light" @click="showModals">Cancelar</button>
-      </div>
-    </form>
-    </div>
     </div>
   </div>
 </template>
@@ -39,6 +38,7 @@
 import { reactive } from '@vue/reactivity';
 import { onMounted } from 'vue';
 import { createDriver, updateDriver } from '../actions';
+import { handleCreateUpdate } from '../../utils';
 
 export default {
   name: "DriversModalComponent",
@@ -46,7 +46,8 @@ export default {
     showModal: Function,
     getDrivers: Function,
     selectedDriver: Object,
-    isCreate: Boolean
+    isCreate: Boolean,
+    onSetLoading: Function,
   },
   setup (props) {
     const driverData = reactive({id: "", first_name: "", last_name: "", age: "", cel_phone: ""});
@@ -64,26 +65,18 @@ export default {
       driverData,
       showModals: props.showModal,
       isDriverCreate: props.isCreate,
-      onSaveDriver: () => {
-        const data = JSON.parse(JSON.stringify(driverData));
-        createDriver(data)
-        .then(() => {
-          props.getDrivers();
-          props.showModal();
-          alert("Conductor creado correctamente");
-        })
-        .catch(error => alert("Ocurrió un error: " + error));
+      onSaveUpdateDriver: () => {
+        handleCreateUpdate(
+          props.isCreate, 
+          createDriver, 
+          updateDriver, 
+          driverData, 
+          props.onSetLoading, 
+          props.showModal, 
+          props.getDrivers, 
+          "Chofer"
+        );
       },
-      onUpdateDriver: () => {
-        const data = JSON.parse(JSON.stringify(driverData));
-        updateDriver(data)
-        .then(() => {
-          props.getDrivers();
-          props.showModal();
-          alert("Conductor actualizado correctamente");
-        })
-        .catch(error => alert("Ocurrió un error: " + error));
-      }
     }
   }
 };

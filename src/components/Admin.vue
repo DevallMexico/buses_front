@@ -24,4 +24,8 @@ export default {
 .title {
   margin-top: 4rem;
 }
+
+.table-responsive {
+  overflow-y: hidden;
+}
 </style>

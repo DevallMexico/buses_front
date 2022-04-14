@@ -61,10 +61,14 @@ export default {
             seatings,
             travel_schedule: travelScheduleId,
           })
-            .then(() => {
+            .then((response) => {
               props.onSetLoading(false);
-              notify({title: "Asientos", text: "Asientos reservados correctamente.", type: 'success'});
-              props.setStep(1);
+              if (response.data.status) {
+                notify({title: "Asientos", text: "Asientos reservados correctamente.", type: 'success'});
+                props.setStep(1);
+              } else {
+                notify({title: "Ocurrió un error", text: response.data.message, type: 'error'});
+              }
             })
             .catch((error) => {
               notify({title: "Ocurrió un error", text: getMessageErrorFormat(error), type: 'error'});

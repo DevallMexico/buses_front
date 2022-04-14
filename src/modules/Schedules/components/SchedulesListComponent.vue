@@ -128,7 +128,7 @@ export default {
         .catch(() => {
           notify({
             title: "Ocurrió un error",
-            text: "No se puede eliminar el chofer debidó a una relación con un trayecto",
+            text: "No se puede eliminar el horario debidó a una relación con un trayecto",
             type: 'error'
           });
           props.onSetLoading(false);

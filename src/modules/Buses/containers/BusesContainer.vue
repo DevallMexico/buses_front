@@ -32,7 +32,7 @@
                 <th scope="col">Marca</th>
                 <th scope="col">Modelo</th>
                 <th scope="col">Año</th>
-                <th scope="col">Capacidad</th>
+                <th scope="col">Número</th>
                 <th scope="col"></th>
               </tr>
             </thead>
@@ -42,7 +42,7 @@
                 <td>{{ bus.brand }}</td>
                 <td>{{ bus.model }}</td>
                 <td>{{ bus.year }}</td>
-                <td>{{ bus.capacity }}</td>
+                <td>{{ bus.number }}</td>
                 <td>
                   <button class="btn btn-primary" @click="onEditBus(bus.id)">
                     Editar
@@ -67,6 +67,8 @@ import LoaderComponent from "@/components/Loader.vue";
 import { onMounted, reactive, ref } from "vue";
 import { getBusesList, deleteBus } from "../actions";
 import BusesModalComponent from "../components/BusesModalComponent.vue";
+import { basicAuth } from "@/modules/utils";
+import { notify } from "@kyvg/vue3-notification";
 
 export default {
   name: "AdminBuses",
@@ -93,7 +95,7 @@ export default {
       if (isCreate) data.selectedBus = {};
       isOpenModal.value = !isOpenModal.value;
     };
-    onMounted(() => getBuses());
+    onMounted(() => {basicAuth(); getBuses();});
     return {
       onSetLoading,
       isLoading,
@@ -110,11 +112,18 @@ export default {
       onDeleteBus: (busId) => {
         onSetLoading(true);
         deleteBus(busId)
-          .then(() => getBuses())
-          .catch((error) => {
-            alert("Ocurrió un error: " + error);
-            onSetLoading(false);
+        .then(() => { 
+          getBuses();
+          notify({title: "Autobuses", text: "Autobús eliminado correctamente.", type: 'warn'});
+        })
+        .catch(() => {
+          notify({
+            title: "Ocurrió un error",
+            text: "No se puede eliminar el autobús debidó a una relación con un trayecto",
+            type: 'error'
           });
+          onSetLoading(false);
+        });
       },
     };
   },

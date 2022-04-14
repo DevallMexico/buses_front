@@ -1,12 +1,9 @@
 import { createApp } from 'vue'
+import Notifications from '@kyvg/vue3-notification'
 import App from './App.vue'
 import router from './router'
-// import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
-// Vue.use(BootstrapVue)
-// Optionally install the BootstrapVue icon components plugin
-// Vue.use(IconsPlugin)
 
-createApp(App).use(router).mount('#app')
+createApp(App).use(Notifications).use(router).mount('#app')

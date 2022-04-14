@@ -20,7 +20,7 @@
         <a class="nav-link" href="#"><router-link to="/schedules">Horarios</router-link> </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#"><router-link to="/seatings">Asignación Asientos</router-link> </a>
+        <a class="nav-link" href="#" @click="onLogOut">Cerrar Sesión </a>
       </li>
       
     </ul>
@@ -29,9 +29,18 @@
 </template>
 
 <script>
-
+import { useRouter } from "vue-router";
 export default {
   name: 'NavBarMenu',
+  setup () {
+    const router = useRouter();
+    return {
+      onLogOut: () => {
+        localStorage.setItem("authToken", "");
+        router.push({ name: "login" });
+      }
+    }
+  }
 }
 </script>
 

@@ -2,7 +2,7 @@
   <br>
   <div class="row">
     <div class="col-md-8 offset-md-2">
-      <h2>Datos de Asientos</h2>
+      <h2>Datos de pasajeros</h2>
       <br>
       <div class="row">  
         <div class="col-md-6 margin-row" v-for="seat in seatingsData" :key="seat.seatNumber">
@@ -33,6 +33,8 @@
 
 <script>
 import { ref, onMounted } from "vue";
+import { notify } from "@kyvg/vue3-notification";
+
 export default {
   name: "SeatingsDataComponent",
   props: {
@@ -64,7 +66,7 @@ export default {
       seatingsData,
       onFillSeatingsData: () => {
         if (isValidData(seatingsData.value)) props.onNextSeatingsData(seatingsData);
-        else alert("Ingresa todos los datos de los pasajeros.");
+        else notify({title: "Ocurrió un error", text: "Ingresa todos los datos de los pasajeros", type: 'error'});
       }
     }
   }

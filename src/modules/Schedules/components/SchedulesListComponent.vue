@@ -75,6 +75,7 @@ import { getScheduleList, deleteSchedule } from "../actions";
 import SchedulesModalComponent from "../components/SchedulesModalComponent.vue";
 import SchedulesFilterComponent from "@/modules/Schedules/components/SchedulesFilterComponents.vue";
 import { formatQueryParams } from "@/modules/Schedules/utils";
+import { notify } from "@kyvg/vue3-notification";
 
 export default {
   name: "SchedulesListContainer",
@@ -120,11 +121,18 @@ export default {
       onDeleteSchedule: (scheduleId) => {
         props.onSetLoading(true);
         deleteSchedule(scheduleId)
-          .then(() => getSchedules())
-          .catch((error) => {
-            alert("Ocurrió un error: " + error);
-            props.onSetLoading(false);
+        .then(() => {
+          getSchedules();
+          notify({title: "Horarios", text: "Horario eliminado correctamente.", type: 'warn'});
+        })
+        .catch(() => {
+          notify({
+            title: "Ocurrió un error",
+            text: "No se puede eliminar el chofer debidó a una relación con un trayecto",
+            type: 'error'
           });
+          props.onSetLoading(false);
+        });
       },
       onSearchSchedules: (filters) => {
         props.onSetLoading(true);

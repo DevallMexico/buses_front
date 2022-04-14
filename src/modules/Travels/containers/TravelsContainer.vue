@@ -29,6 +29,7 @@
       <th scope="col">#</th>
       <th scope="col">Origen</th>
       <th scope="col">Destino</th>
+      <th scope="col">Promedio Pasajeros</th>
       <th scope="col">Opciones</th>
     </tr>
   </thead>
@@ -37,6 +38,7 @@
       <th scope="row">{{ travel.id }}</th>
       <td>{{ travel.origin }}</td>
       <td>{{ travel.destiny }}</td>
+      <td>{{ travel.avg_passengers_percentage }}%</td>
       <td>
         <button class="btn btn-primary" @click="onEditTravel(travel.id)">Editar</button>
         &nbsp;
@@ -60,6 +62,8 @@
   import { onMounted, reactive, ref } from "vue";
   import { getTravelsList, deleteTravel} from '../actions';
   import TravelsModalComponent from '../components/TravelsModalComponent.vue';
+  import { basicAuth } from "@/modules/utils";
+  import { notify } from "@kyvg/vue3-notification";
 
   export default {
     name: 'AdmintTravels',
@@ -79,7 +83,7 @@
         if (isCreate) data.selectedTravel = {};
         isOpenModal.value = !isOpenModal.value;
       };
-      onMounted (() => getTravels());
+      onMounted (() => { basicAuth(); getTravels(); });
       return {
         isOpenModal,
         data,
@@ -94,10 +98,17 @@
         onDeleteTravel: (travelId) => {
           onSetLoading(true);
           deleteTravel(travelId)
-          .then(() => getTravels())
-          .catch(error => {
+          .then(() => {
+            notify({title: "Trayectos", text: "Trayecto eliminado correctamente.", type: 'warn'});
+            getTravels();
+          })
+          .catch(() => {
             onSetLoading(false);
-            alert("Ocurrió un error: " + error)
+            notify({
+              title: "Ocurrió un error",
+              text: "No se puede eliminar el chofer debidó a una relación con un trayecto",
+              type: 'error'
+            });
           })
         },
       };

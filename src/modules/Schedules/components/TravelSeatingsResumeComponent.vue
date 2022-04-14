@@ -36,6 +36,9 @@
 
 <script>
 import { createSeat, createMultipleSeatings } from "@/modules/Schedules/actions";
+import { getMessageErrorFormat } from "@/modules/utils";
+import { notify } from "@kyvg/vue3-notification";
+
 export default {
   name: "TravelSeatingsResumeComponent",
   props: {
@@ -60,22 +63,22 @@ export default {
           })
             .then(() => {
               props.onSetLoading(false);
-              alert("Asientos reservados Correctamente");
+              notify({title: "Asientos", text: "Asientos reservados correctamente.", type: 'success'});
               props.setStep(1);
             })
             .catch((error) => {
-              alert("ha ocurrido un error: " + error);
+              notify({title: "Ocurrió un error", text: getMessageErrorFormat(error), type: 'error'});
               props.onSetLoading(false);
             });
         } else {
           createSeat({ ...seatings[0], travel_schedule: travelScheduleId })
             .then(() => {
               props.onSetLoading(false);
-              alert("Asientos reservados Correctamente");
+              notify({title: "Asientos", text: "Asientos reservados correctamente.", type: 'success'});
               props.setStep(1);
             })
             .catch((error) => {
-              alert("Ocurrió un error: " + error);
+              notify({title: "Ocurrió un error", text: getMessageErrorFormat(error), type: 'error'});
               props.onSetLoading(false);
             });
         }

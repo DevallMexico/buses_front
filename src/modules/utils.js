@@ -1,3 +1,14 @@
+import { useRouter } from "vue-router";
+import { notify } from "@kyvg/vue3-notification";
+
+export const getMessageErrorFormat = (error) => {
+  const errorData = error.response.data;
+  const entries = Object.entries(errorData);
+  let message = "<ul>";
+  if (entries.length > 0) for(const [key, value] of entries) message += `<li>${key}: ${value}</li>`;
+  message += "</ul>"
+  return message;
+}
 
 export const handleCreateUpdate = (
     isCreate, 
@@ -17,16 +28,21 @@ export const handleCreateUpdate = (
   .then(() => {
     showModal();
     getObjects();
-    alert(objectName + " creado correctamente");
+    notify({
+      title: objectName,
+      text: `El ${objectName} ha sido ${isCreate ? 'creado' : 'actualizado'} correctamente.`,
+      type: 'success'
+    });
   })
   .catch(error => {
-    const errorData = error.response.data;
-    const entries = Object.entries(errorData);
-    let message = "";
-    if (entries.length > 0)
-        for(const [key, value] of entries) message += `${key}: ${value}`
     document.getElementById("modal").style.display = "flex";
-    alert("Ocurrió un error: " + message);
+    notify({title: objectName, text: getMessageErrorFormat(error), type: 'error'});
     onSetLoading(false);
   });
+}
+
+export const basicAuth = () => {
+  const router = useRouter();
+  const isAuth = localStorage.getItem("authToken");
+  if (!isAuth) router.push({ name: "login" });
 }

@@ -35,11 +35,11 @@
             />
           </div>
           <div class="form-group">
-            <label>Capacidad:</label>
+            <label>Número:</label>
             <input
               class="form-control"
               type="number"
-              v-model="busData.capacity"
+              v-model="busData.number"
               required
             />
           </div>
@@ -79,7 +79,7 @@ export default {
       brand: "",
       model: "",
       year: "",
-      capacity: "",
+      number: "",
     });
     onMounted(() => {
       const bus = props.selectedBus;
@@ -88,7 +88,7 @@ export default {
         busData.brand = bus.brand;
         busData.model = bus.model;
         busData.year = bus.year;
-        busData.capacity = bus.capacity;
+        busData.number = bus.number;
       }
     });
     return {

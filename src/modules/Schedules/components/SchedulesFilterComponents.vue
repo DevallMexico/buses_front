@@ -5,21 +5,25 @@
         <h2>Horarios</h2>
       </div>
       <div class="col-md-7 text-center">
-        <!--<label>% de Capacidad Vendida</label>
-        <select class="form-control">
-          <option>10%</option>
-          <option>20%</option>
-          <option>30%</option>
-          <option>40%</option>
-          <option>50%</option>
-          <option>60%</option>
-          <option>70%</option>
-          <option>80%</option>
-          <option>90%</option>
-        </select>-->
         <div class="input-group">
-        <input v-model="filters.origin" type="text" class="form-control" placeholder="Origen">
-        <input v-model="filters.destiny" type="text" class="form-control" placeholder="Destino">
+        <select class="form-control" v-model="filters.travel">
+          <option value="" selected disabled hidden>Selecciona un trayecto</option>
+          <option value="">Sin Filtro</option>
+          <option v-for="travel in travels" :key="travel.id" :value="travel.id">{{ travel.origin }} - {{ travel.destiny }}</option>
+        </select>
+        <select v-model="filters.sold_capacity" class="form-control">
+          <option value="" selected disabled hidden>Capacidad Vendida</option>
+          <option value="">Sin Filtro</option>
+          <option value="10">Mayor a 10%</option>
+          <option value="20">Mayor a 20%</option>
+          <option value="30">Mayor a 30%</option>
+          <option value="40">Mayor a 40%</option>
+          <option value="50">Mayor a 50%</option>
+          <option value="60">Mayor a 60%</option>
+          <option value="70">Mayor a 70%</option>
+          <option value="80">Mayor a 80%</option>
+          <option value="90">Mayor a 90%</option>
+        </select>
         <input v-model="filters.date" type="date" class="form-control">
         <div class="input-group-append">
             <button class="btn btn-outline-secondary" type="button" @click="onSearch(filters)">Buscar</button>
@@ -36,7 +40,8 @@
 </template>
 
 <script>
-import { reactive } from 'vue';
+import { reactive, ref, onMounted } from 'vue';
+import { getTravelsList } from '@/modules/Travels/actions';
 export default {
   name: "SchedulesFilterComponent",
   props: {
@@ -44,9 +49,12 @@ export default {
     onSearchSchedules: Function
   },
   setup (props) {
-    const filters = reactive({origin: "", destiny: "", date: ""});
+    const filters = reactive({travel: "", sold_capacity: "", date: ""});
+    const travels = ref([]);
+    onMounted(() => getTravelsList().then((response) => travels.value = response.data));
     return {
       filters,
+      travels,
       onShowModal: props.showModal,
       onSearch: props.onSearchSchedules,
     }

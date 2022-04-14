@@ -46,6 +46,9 @@
 <script>
 import { onMounted, ref } from "vue";
 import { getOccupiedSeats } from "@/modules/Schedules/actions";
+import { notify } from "@kyvg/vue3-notification";
+import { getMessageErrorFormat } from "@/modules/utils";
+
 export default {
   name: "SeatingSelectionComponent",
   props: {
@@ -73,7 +76,11 @@ export default {
           props.onSetLoading(false);
         })
         .catch((error) => {
-          alert(error);
+          notify({
+            title: "Ocurrió un error",
+            text: getMessageErrorFormat(error),
+            type: 'error'
+          });
           props.onSetLoading(false);
         });
     };
@@ -85,14 +92,14 @@ export default {
       onNext: () => {
         const selectedSeats = seatings.value.filter((seat) => seat.isSelected);
         if (selectedSeats.length === 0)
-          alert("Selecciona al menos un asiento para continuar");
+          notify({title: "Asientos", text: "Necesitas seleccionar al menos un asiento para continuar", type: 'warn'});
         else {
           props.onNextStep(selectedSeats);
         }
       },
       onSelectedSeat: (seat) => {
         if (seat.isOccupied)
-          alert("El asiento que seleccionaste está ocupado.");
+          notify({title: "Asientos", text: "El asiento que seleccionaste ya está ocupado.", type: 'error'});
         else seat.isSelected = !seat.isSelected;
       },
       getImageClass: (seat, isNumber = false) => {

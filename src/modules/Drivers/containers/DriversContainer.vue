@@ -64,6 +64,8 @@
   import { onMounted, reactive, ref } from "vue";
   import { getDriversList, deleteDriver} from '../actions';
   import DriversModalComponent from '../components/DriversModalComponent.vue';
+  import { basicAuth } from "@/modules/utils";
+  import { notify } from "@kyvg/vue3-notification";
 
   export default {
     name: 'AdminDrivers',
@@ -83,7 +85,7 @@
         if (isCreate) data.selectedDriver = {};
         isOpenModal.value = !isOpenModal.value;
       };
-      onMounted (() => getDrivers());
+      onMounted (() => {basicAuth(); getDrivers()});
       return {
         isOpenModal,
         data,
@@ -98,9 +100,16 @@
         onDeleteDriver: (driverId) => {
           onSetLoading(true);
           deleteDriver(driverId)
-          .then(() => getDrivers())
-          .catch(error => {
-            alert("Ocurrió un error: " + error);
+          .then(() => { 
+            getDrivers();
+            notify({title: "Choferes", text: "Chofer eliminado correctamente.", type: 'warn'});
+          })
+          .catch(() => {
+            notify({
+              title: "Ocurrió un error",
+              text: "No se puede eliminar el chofer debidó a una relación con un trayecto",
+              type: 'error'
+            });
             onSetLoading(false);
           })
         },

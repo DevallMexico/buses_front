@@ -31,11 +31,12 @@
 <script>
 import NavBarMenu from "@/components/NavBarMenu.vue";
 import SchedulesListComponent from "@/modules/Schedules/components/SchedulesListComponent.vue";
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import SeatingsSelectionComponent from "../../Schedules/components/SeatingsSelectionComponent.vue";
 import SeatingsDataComponent from "../../Schedules/components/SeatingsDataComponent.vue";
 import TravelSeatingsResumeComponent from "../../Schedules/components/TravelSeatingsResumeComponent.vue";
 import LoaderComponent from "../../../components/Loader.vue";
+import { basicAuth } from "@/modules/utils";
 
 export default {
   name: "SchedulesContainer",
@@ -56,6 +57,7 @@ export default {
     });
     const isLoading = ref(false);
     const onSetLoading = (state) => (isLoading.value = state);
+    onMounted(() => basicAuth());
     return {
       data,
       isLoading,

@@ -8,19 +8,16 @@
 ## Project build
 ``` bash
 
+In project directory run de follows commands
+
+### install all dependences
+
 npm install
 
 ### Compiles and hot-reloads for development
 
 npm run serve
 
-### Compiles and minifies for production
-
-npm run build
-
-### Lints and fixes files
-
-npm run lint
 ```
 
 ## Credentials
